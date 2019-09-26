@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BK": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\User\\Desktop\\words_alpha.txt"
+    }
+  }
+}
