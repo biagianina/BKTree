@@ -30,6 +30,7 @@ namespace BK
         private void AddToChildren(BKTreeNode node, string value)
         {
             int levenstheinDist = GetLevenstheinDistance(node.Value, value);
+
             if (node.GetChild(levenstheinDist) == null)
             {
                 node.Children.Add(levenstheinDist, new BKTreeNode(value));
@@ -54,9 +55,9 @@ namespace BK
 
             for (int i = upperDist; i >= lowerDist; i--)
             {
-                if (node.Children.TryGetValue(i, out BKTreeNode child))
+                if (node.GetChild(i) != null)
                 {
-                    Match(child, word, tolerance, result);
+                    Match(node.GetChild(i), word, tolerance, result);
                 }
             }
         }
