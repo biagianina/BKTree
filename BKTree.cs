@@ -30,14 +30,13 @@ namespace BK
         private void AddToChildren(BKTreeNode node, string value)
         {
             int levenstheinDist = GetLevenstheinDistance(node.Value, value);
-            if (!node.Children.ContainsKey(levenstheinDist))
+            if (node.GetChild(levenstheinDist) == null)
             {
                 node.Children.Add(levenstheinDist, new BKTreeNode(value));
             }
             else
             {
-                node.Children.TryGetValue(levenstheinDist, out BKTreeNode current);
-                AddToChildren(current, value);
+                AddToChildren(node.GetChild(levenstheinDist), value);
             }
         }
 
@@ -64,48 +63,44 @@ namespace BK
 
         private int GetLevenstheinDistance(string first, string second)
         {
-            int[,] distance;
-            int n = first.Length;
-            int m = second.Length;
-            int cost;
-            if (n == 0)
+            int firstLength = first.Length;
+            int secondLength = second.Length;
+            int[,] levDist = new int[firstLength + 1, secondLength + 1];
+
+            if (firstLength == 0)
             {
-                return m;
+                return secondLength;
             }
 
-            if (m == 0)
+            if (secondLength == 0)
             {
-                return n;
+                return firstLength;
             }
 
-            distance = new int[n + 1, m + 1];
-            for (int i = 0; i <= n; i++)
+            for (int i = 1; i <= firstLength; i++)
             {
-                distance[i, 0] = i;
+                levDist[i, 0] = i;
             }
-
-            for (int j = 0; j <= m; j++)
+            
+            for (int j = 1; j <= secondLength; j++)
             {
-                distance[0, j] = j;
+                levDist[0, j] = j;
             }
-
-            for (int i = 1; i <= n; i++)
+            
+            for (int i = 1; i <= firstLength; i++)
             {
-                char firstValueChar = first[i - 1];
-                for (int j = 1; j <= m; j++)
+                char firstChar = first[i - 1];
+                for (int j = 1; j <= secondLength; j++)
                 {
-                    char secondValueChar = second[j - 1];
-                    cost = firstValueChar == secondValueChar ? 0 : 1;
+                    int substituionCost = firstChar == second[j - 1] ? 0 : 1;
 
-                    distance[i, j] = Math.Min(
-                        Math.Min(
-                            distance[i - 1, j] + 1,
-                            distance[i, j - 1] + 1),
-                        distance[i - 1, j - 1] + cost);
+                    levDist[i, j] = Math.Min(Math.Min(levDist[i - 1, j] + 1,
+                        levDist[i, j - 1] + 1),
+                        levDist[i - 1, j - 1] + substituionCost);
                 }
             }
 
-            return distance[n, m];
+            return levDist[firstLength, secondLength];
         }
     }
 }

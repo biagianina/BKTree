@@ -15,5 +15,12 @@ namespace BK
         }
 
         public string Value { get; }
+
+        
+        public BKTreeNode GetChild(int key)
+        {
+            Children.TryGetValue(key, out BKTreeNode current);
+            return current;
+        }
     }
 }
