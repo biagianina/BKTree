@@ -22,9 +22,7 @@ namespace BK
 
         public List<string> Match(string word, int tolerance)
         {
-            List<string> result = new List<string>();
-            Match(rootNode, word, tolerance, result);
-            return result;
+           return Match(rootNode, word, tolerance);
         }
 
         private void AddToChildren(BKTreeNode node, string value)
@@ -41,8 +39,9 @@ namespace BK
             }
         }
 
-        private void Match(BKTreeNode node, string word, int tolerance, ICollection<string> result)
+        private List<string> Match(BKTreeNode node, string word, int tolerance)
         {
+            List<string> result = new List<string>();
             int dist = GetLevenstheinDistance(node.Value, word);
 
             if (dist <= tolerance)
@@ -57,9 +56,15 @@ namespace BK
             {
                 if (node.GetChild(i) != null)
                 {
-                    Match(node.GetChild(i), word, tolerance, result);
+                   var nodeResult = Match(node.GetChild(i), word, tolerance);
+                   foreach (var match in nodeResult)
+                   {
+                       result.Add(match);
+                   }
                 }
             }
+
+            return result;
         }
 
         private int GetLevenstheinDistance(string first, string second)
