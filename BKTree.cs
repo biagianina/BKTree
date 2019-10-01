@@ -33,7 +33,7 @@ namespace BK
 
             if (node.GetChild(levenstheinDist) == null)
             {
-                node.Children.Add(levenstheinDist, new BKTreeNode(value));
+                node.Add(levenstheinDist, value);
             }
             else
             {

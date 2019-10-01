@@ -22,5 +22,10 @@ namespace BK
             Children.TryGetValue(key, out BKTreeNode current);
             return current;
         }
+
+        public void Add(int levenstheinDist, string value)
+        {
+            Children.Add(levenstheinDist, new BKTreeNode(value));
+        }
     }
 }
